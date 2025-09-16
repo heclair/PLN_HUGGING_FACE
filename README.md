@@ -18,6 +18,37 @@ Implementação completa de um **chatbot com RAG** (Retrieval-Augmented Generati
 
 ---
 
+## 🌐 Por que a Inference API do Hugging Face não funcionou
+
+Durante os testes, as chamadas para:
+```
+POST https://api-inference.huggingface.co/models/meta-llama/Llama-3.1-8B-Instruct
+```
+retornaram **404 Not Found**, mesmo com:
+- Token válido (`whoami-v2` OK)
+- Model ID correto
+- License aceita / acesso ao repositório
+
+**Causas típicas**:
+
+1) **Model ID vs disponibilidade na Serverless API**  
+   Alguns repositórios (sobretudo **gated**, como Llama 3.1) não estão habilitados na **Serverless Inference API** pública; o metadata responde, mas a rota de inferência retorna **404**.
+
+2) **Licença “gated”**  
+   Aceitar a licença dá acesso ao **repo**, mas não implica acesso à **serverless**. Para inferência gerenciada, use **Inference Endpoints** (pago) ou rode localmente.
+
+3) **Capacidade/região**  
+   Em certos momentos a serverless pode não servir modelos maiores, devolvendo 404.
+
+4) **Erros de token/headers** nas tentativas manuais (menos provável no backend).
+
+**Contorno**:  
+- Usar o **fallback local** (`HF_USE_LOCAL=1`) — já implementado.  
+- Testar com modelos **públicos** da serverless (ex.: `HuggingFaceH4/zephyr-7b-beta`, `google/flan-t5-small`).  
+- Para Llama 3.1, preferir **Inference Endpoints** ou **self-host** (Transformers/TGI).
+
+---
+
 ## 🧱 Stack
 
 - **Backend**: Python, FastAPI, Uvicorn, FAISS (ou in-memory), Sentence-Transformers
@@ -203,37 +234,6 @@ streamlit run frontend/app.py
 - O serviço normaliza os textos (casefold + acentos), reduzindo sensibilidade a **minúsculas/maiúsculas** (ex.: “brasil” vs “Brasil”).
 - O limiar de similaridade (`MIN_SIM`, em `rag.py`) foi ajustado para PT.  
   Se notar respostas “não sei” com textos parecidos, **reduza um pouco** esse limiar.
-
----
-
-## 🌐 Por que a Inference API do Hugging Face não funcionou
-
-Durante os testes, as chamadas para:
-```
-POST https://api-inference.huggingface.co/models/meta-llama/Llama-3.1-8B-Instruct
-```
-retornaram **404 Not Found**, mesmo com:
-- Token válido (`whoami-v2` OK)
-- Model ID correto
-- License aceita / acesso ao repositório
-
-**Causas típicas**:
-
-1) **Model ID vs disponibilidade na Serverless API**  
-   Alguns repositórios (sobretudo **gated**, como Llama 3.1) não estão habilitados na **Serverless Inference API** pública; o metadata responde, mas a rota de inferência retorna **404**.
-
-2) **Licença “gated”**  
-   Aceitar a licença dá acesso ao **repo**, mas não implica acesso à **serverless**. Para inferência gerenciada, use **Inference Endpoints** (pago) ou rode localmente.
-
-3) **Capacidade/região**  
-   Em certos momentos a serverless pode não servir modelos maiores, devolvendo 404.
-
-4) **Erros de token/headers** nas tentativas manuais (menos provável no backend).
-
-**Contorno**:  
-- Usar o **fallback local** (`HF_USE_LOCAL=1`) — já implementado.  
-- Testar com modelos **públicos** da serverless (ex.: `HuggingFaceH4/zephyr-7b-beta`, `google/flan-t5-small`).  
-- Para Llama 3.1, preferir **Inference Endpoints** ou **self-host** (Transformers/TGI).
 
 ---
 

@@ -1,0 +1,10 @@
+fastapi
+uvicorn
+sentence-transformers
+faiss-cpu
+requests
+python-dotenv
+python-multipart
+transformers
+accelerate
+torch

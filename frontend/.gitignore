@@ -1,0 +1,13 @@
+# Frontend (streamlit)
+# Local env
+.env
+# Streamlit
+.streamlit/
+# Python cache (caso haja scripts utilitários)
+__pycache__/
+*.py[cod]
+# OS/editor
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/

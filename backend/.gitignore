@@ -1,0 +1,16 @@
+# Backend (app/)
+# Python cache
+__pycache__/
+*.py[cod]
+# Local env
+.env
+# Data / índice FAISS
+../data/
+*.faiss
+*.pkl
+*.bin
+*.pt
+*.pth
+*.safetensors
+# Logs
+*.log

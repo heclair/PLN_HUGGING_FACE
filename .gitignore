@@ -1,0 +1,26 @@
+# Root
+# Envs
+.env
+.venv/
+venv/
+ENV/
+# Python cache
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+# OS/editor
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/
+# Data / indices / artifacts
+data/
+*.faiss
+*.bin
+*.pt
+*.pth
+*.safetensors
+*.pkl
+# Logs
+*.log

@@ -251,17 +251,3 @@ streamlit run frontend/app.py
    As respostas citam as **fontes** (Doc X, Doc Y).
 
 ---
-
-## 🔐 Boas práticas
-
-- Nunca comite `.env` (token HF).  
-- Se expor publicamente, configure **auth/rate-limit/CORS**.
-
----
-
-## 📌 Roadmap (sugestões)
-
-- Listagem/persistência de documentos com metadados
-- Histórico por `session_id`
-- Suporte a E5 + re-ranker
-- Streaming de tokens no chat
